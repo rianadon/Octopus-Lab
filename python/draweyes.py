@@ -124,12 +124,6 @@ for i, path in enumerate(eyepaths):
         use.set('href', '#' + ids[i])
         use.set('clip-path', 'url(#' + ids[i] + 'k)')
         lids.append(ids[i])
-#     # c = center(path)
-#     # p = ET.SubElement(g2, 'circle')
-#     # p.set('fill', 'red')
-#     # p.set('cx', str(c.real))
-#     # p.set('cy', str(c.imag))
-#     # p.set('r', '1')
 
 style = """
 @keyframes blink {
