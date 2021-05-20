@@ -21,7 +21,7 @@ You'll see an octopus like the one above pop up! The renderer will set up the sc
 
 I've put some care into this project since there exist few other Rust + LiquidFun projects and it may be interesting to generative artisters or game devvers. There's only about 300 lines of code here and it's split into two files:
 - `src/main.rs`: Does the drawing! It retrieves world state from LiquidFun and draws everything.
-- `src/model.rs`: Does the simulation! It sets up LiquidFun, adds particles, and records their positions to `frames-rust.bin`.
+- `src/model.rs`: Does the simulation! It sets up LiquidFun, adds particles, and records their positions to the file `frames-rust.bin`.
 
 ## Python files
 
@@ -43,20 +43,3 @@ I spent a whole night trying various compression schemes and I'm very proud of m
 - Gzipping compression magic™: 1.29 MB
 
 You can read more [here](compression.md) if you are tickled with curiosity.
-
-### How to compress bitmap (each pixel is 0 or 1) videos
-
-Each frame is broken down into 4px x 4px blocks. Notational note: `B(f,i)` = block `i` of frame `f`. String concatenation is ++.
-
-| if                                                                      | emit                        |
-|:------------------------------------------------------------------------|:----------------------------|
-| `B(f,i)` != `B(f-1,i)` (new block)                                      | `\x00` ++ `B(f,i)`          |
-| `B(f,i..j)` = `B(f-1,i..j`) and `j`-`i` ≤ 255 (consecutive same blocks) | (`j` - `i`)                 |
-| `B(f,i..j)` = `B(f-1,i..j`) and 256 ≤ `j`-`i` ≤ 510                     | `\xff` ++ (`j` - `i` - 255) |
-| ... etc (prepend 255s as necessary)                                     |                             |
-
-For example, frame 1 with blocks `AAAA,AAAA,AAAA,AAAA` and frame 2 with blocks `BBBB,AAAA,AAAA,BBBB` are encoded as
-
-    00AAAA 00AAAA 00AAAA 00AAAA 00BBBB 02 00BBBB
-
-That looks really long, but the savings from being to encode up to 255 unchanged blocks into a single byte is incredible. The downside is every frame relies on the previous frame to be decoded, so the only efficient way to read the frames is forward. There is no rewinding, sadly.
