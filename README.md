@@ -38,7 +38,7 @@ There are a few dependencies you're going to need. I'm just including these file
 
 I spent a whole night trying various compression schemes and I'm very proud of my productivity and would like to tell you how it went. The frames, uncompressed, weigh about 30 MB. That's ... a lot. But here's the magic: with some simple techniques™ I can *beat* Gzip's 2.2 MB (okay more like tie but who cares). And Gzipping-the compressed frames further halves the file size!
 
-- Gzipping `frames.rs`: 2.19 MB
+- Gzipping `frames-rust.bin`: 2.19 MB
 - Special compression magic™: 2.17 MB
 - Gzipping compression magic™: 1.29 MB
 
